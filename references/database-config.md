@@ -2,15 +2,15 @@
 
 ## 表格信息
 
-**表格名称**：我的成长计划
-**Base Token**：YOUR_BASE_TOKEN
-**表格地址**：YOUR_BASE_URL
+**表格名称**：Faye的成长计划
+**Base Token**：T0ZQb1e25acfizsowUycm1Jan0c
+**表格地址**：https://lcn6itdxogbg.feishu.cn/base/T0ZQb1e25acfizsowUycm1Jan0c
 
 ---
 
 ## 表1：固定日程
 
-**Table ID**：YOUR_SCHEDULE_TABLE_ID
+**Table ID**：tblAO5xVkCvkVW07
 
 ### 字段配置
 
@@ -28,8 +28,8 @@
 
 ```bash
 lark-cli base +record-upsert \
-  --base-token "YOUR_BASE_TOKEN" \
-  --table-id "YOUR_SCHEDULE_TABLE_ID" \
+  --base-token "T0ZQb1e25acfizsowUycm1Jan0c" \
+  --table-id "tblAO5xVkCvkVW07" \
   --json '{"日程名称":"每天早上8点起床","开始时间":"2026-04-18 08:00:00","重复规则":"每天","状态":"进行中"}' \
   --as user
 ```
@@ -38,8 +38,8 @@ lark-cli base +record-upsert \
 
 ```bash
 lark-cli base +record-list \
-  --base-token "YOUR_BASE_TOKEN" \
-  --table-id "YOUR_SCHEDULE_TABLE_ID" \
+  --base-token "T0ZQb1e25acfizsowUycm1Jan0c" \
+  --table-id "tblAO5xVkCvkVW07" \
   --as user
 ```
 
@@ -47,7 +47,7 @@ lark-cli base +record-list \
 
 ## 表2：任务
 
-**Table ID**：YOUR_TASK_TABLE_ID
+**Table ID**：tblI3CavMGlKSbml
 
 ### 字段配置
 
@@ -67,8 +67,8 @@ lark-cli base +record-list \
 
 ```bash
 lark-cli base +record-upsert \
-  --base-token "YOUR_BASE_TOKEN" \
-  --table-id "YOUR_TASK_TABLE_ID" \
+  --base-token "T0ZQb1e25acfizsowUycm1Jan0c" \
+  --table-id "tblI3CavMGlKSbml" \
   --json '{"fld5IYqRy4":"2026-04-17","fldqux9alc":"改简历","fldydzm2hy":"工作","fldSzwfWct":"未开始"}' \
   --as user
 ```
@@ -77,102 +77,8 @@ lark-cli base +record-upsert \
 
 ```bash
 lark-cli base +record-list \
-  --base-token "YOUR_BASE_TOKEN" \
-  --table-id "YOUR_TASK_TABLE_ID" \
-  --as user
-```
-
----
-
-## 表3：习惯
-
-**Table ID**：YOUR_HABIT_TABLE_ID
-
-### 字段配置
-
-| 字段名 | 字段ID | 类型 | 说明 |
-|--------|--------|------|------|
-| 习惯名称 | - | 文本 | 习惯内容 |
-| 标签 | - | 单选 | 健康/学习/工作/生活/爱好 |
-| 累计天数 | - | 数字 | 累计打卡天数 |
-| 连续天数 | - | 数字 | 连续打卡天数 |
-| 创建日期 | - | 日期 | 创建日期 |
-| 最后打卡日期 | - | 日期 | 最后打卡日期 |
-| 是否启用 | - | 复选框 | 是否启用 |
-
-### 操作命令
-
-#### 创建习惯
-
-```bash
-lark-cli base +record-upsert \
-  --base-token "YOUR_BASE_TOKEN" \
-  --table-id "YOUR_HABIT_TABLE_ID" \
-  --json '{"习惯名称":"阅读30分钟","标签":"学习","累计天数":0,"连续天数":0,"是否启用":true}' \
-  --as user
-```
-
-#### 打卡习惯
-
-```bash
-lark-cli base +record-upsert \
-  --base-token "YOUR_BASE_TOKEN" \
-  --table-id "YOUR_HABIT_TABLE_ID" \
-  --record-id "记录ID" \
-  --json '{"累计天数":5,"连续天数":5,"最后打卡日期":"2026-04-17"}' \
-  --as user
-```
-
----
-
-## 表4：打卡记录
-
-**Table ID**：YOUR_CHECKIN_TABLE_ID
-
-### 字段配置
-
-| 字段名 | 字段ID | 类型 | 说明 |
-|--------|--------|------|------|
-| 日期 | - | 日期 | 打卡日期 |
-| 习惯名称 | - | 文本 | 关联习惯名称 |
-| 复盘 | - | 文本 | 打卡复盘内容 |
-| 是否打卡 | - | 复选框 | 是否已打卡 |
-
-### 操作命令
-
-#### 写入打卡记录
-
-```bash
-lark-cli base +record-upsert \
-  --base-token "YOUR_BASE_TOKEN" \
-  --table-id "YOUR_CHECKIN_TABLE_ID" \
-  --json '{"日期":"2026-04-17","习惯名称":"阅读30分钟","复盘":"今天读了一章，很有收获","是否打卡":true}' \
-  --as user
-```
-
----
-
-## 表5：灵感
-
-**Table ID**：YOUR_IDEA_TABLE_ID
-
-### 字段配置
-
-| 字段名 | 字段ID | 类型 | 说明 |
-|--------|--------|------|------|
-| 灵感内容 | - | 文本 | 灵感内容 |
-| 标签 | - | 多选 | 健康/学习/工作/生活/爱好 |
-| 创建时间 | - | 日期时间 | 创建时间 |
-
-### 操作命令
-
-#### 记录灵感
-
-```bash
-lark-cli base +record-upsert \
-  --base-token "YOUR_BASE_TOKEN" \
-  --table-id "YOUR_IDEA_TABLE_ID" \
-  --json '{"灵感内容":"想学习一门新技能","标签":["学习"],"创建时间":"2026-04-17 22:00:00"}' \
+  --base-token "T0ZQb1e25acfizsowUycm1Jan0c" \
+  --table-id "tblI3CavMGlKSbml" \
   --as user
 ```
 
@@ -182,16 +88,16 @@ lark-cli base +record-upsert \
 
 | 分类 | 清单ID |
 |------|--------|
-| 学习 | YOUR_STUDY_LIST_ID |
-| 工作 | YOUR_WORK_LIST_ID |
-| 生活 | YOUR_LIFE_LIST_ID |
+| 学习 | 424aad40-5fea-47c1-b846-48416b53f685 |
+| 工作 | 55eb10db-31ed-4aee-bbf9-9dd97235e7d9 |
+| 生活 | 3dda1822-a9a8-4ab9-b6ea-a278283b8224 |
 
 ### 创建飞书任务
 
 ```bash
 lark-cli task +create \
   --title "任务名称" \
-  --section-guid "YOUR_XXX_LIST_ID" \
+  --section-guid "清单ID" \
   --as user
 ```
 
@@ -235,6 +141,7 @@ lark-cli calendar +create \
 
 ## 注意事项
 
+- 情绪标签是**单选**，只能填一个选项
 - 任务分类对应不同的飞书任务清单
 - 飞书日历的重复事件需要特殊处理
 - 时区使用北京时间（Asia/Shanghai）

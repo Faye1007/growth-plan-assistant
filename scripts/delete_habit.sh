@@ -11,8 +11,8 @@ if [ -z "$NAME" ]; then
     exit 1
 fi
 
-BASE_TOKEN="YOUR_BASE_TOKEN"
-TABLE_ID="YOUR_HABIT_TABLE_ID"
+BASE_TOKEN="T0ZQb1e25acfizsowUycm1Jan0c"
+TABLE_ID="tblo7lOdFkpP635C"
 
 # 查询记录
 RECORDS=$(lark-cli base +record-list --base-token "$BASE_TOKEN" --table-id "$TABLE_ID" --as user 2>/dev/null)

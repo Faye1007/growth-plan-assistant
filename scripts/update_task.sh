@@ -7,8 +7,8 @@ set -e
 OLD_TITLE="$1"
 shift
 
-BASE_TOKEN="YOUR_BASE_TOKEN"
-TABLE_ID="YOUR_TASK_TABLE_ID"
+BASE_TOKEN="T0ZQb1e25acfizsowUycm1Jan0c"
+TABLE_ID="tblI3CavMGlKSbml"
 
 if [ -z "$OLD_TITLE" ]; then
     echo "用法: ./update_task.sh \"任务名称\" [--category \"工作\"] [--title \"新名称\"]"
@@ -35,8 +35,8 @@ import subprocess
 import json
 import os
 
-BASE_TOKEN = os.environ.get("BASE_TOKEN", "YOUR_BASE_TOKEN")
-TABLE_ID = os.environ.get("TABLE_ID", "YOUR_TASK_TABLE_ID")
+BASE_TOKEN = os.environ.get("BASE_TOKEN", "T0ZQb1e25acfizsowUycm1Jan0c")
+TABLE_ID = os.environ.get("TABLE_ID", "tblI3CavMGlKSbml")
 OLD_TITLE = os.environ.get("OLD_TITLE", "")
 NEW_TITLE = os.environ.get("NEW_TITLE", "")
 NEW_CATEGORY = os.environ.get("NEW_CATEGORY", "")

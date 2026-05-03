@@ -13,8 +13,8 @@ if [ -z "$NAME" ]; then
     exit 1
 fi
 
-BASE_TOKEN="YOUR_BASE_TOKEN"
-TABLE_ID="YOUR_SCHEDULE_TABLE_ID"
+BASE_TOKEN="T0ZQb1e25acfizsowUycm1Jan0c"
+TABLE_ID="tblAO5xVkCvkVW07"
 
 export LARK_CLI_NO_PROXY=1
 

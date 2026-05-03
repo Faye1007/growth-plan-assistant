@@ -2,6 +2,7 @@
 # 创建日程脚本
 # 用法: ./create_schedule.sh "日程名称" "时间" "重复规则" "标签"
 # 必要字段：日程名称、时间、重复规则、标签
+# 流程：先创建飞书日历事件 → 成功后写入多维表格 → 避免同步时误删
 
 set -e
 
@@ -10,8 +11,8 @@ TIME="$2"
 REPEAT="$3"
 TAG="$4"
 
-BASE_TOKEN="YOUR_BASE_TOKEN"
-SCHEDULE_TABLE="YOUR_SCHEDULE_TABLE_ID"
+BASE_TOKEN="T0ZQb1e25acfizsowUycm1Jan0c"
+SCHEDULE_TABLE="tblAO5xVkCvkVW07"
 TODAY=$(date +"%Y-%m-%d")
 
 # 检查必要字段
@@ -97,59 +98,12 @@ if [ "$EXISTING" == "exists" ]; then
     exit 0
 fi
 
-# 写入多维表格
 echo "📝 正在创建日程：$NAME..."
 
-RESULT=$(python3 << EOF
-import subprocess
-import json
-from datetime import datetime
-
-base_token = "$BASE_TOKEN"
-table_id = "$SCHEDULE_TABLE"
-name = "$NAME"
-time = "$TIME"
-repeat = "$REPEAT"
-tag = "$TAG"
-today = "$TODAY"
-
-record = {
-    "标题": name,
-    "时间": time,
-    "频率": repeat,
-    "分类": tag,
-    "是否启用": True
-}
-
-json_str = json.dumps(record, ensure_ascii=False)
-cmd = f'lark-cli base +record-upsert --base-token "{base_token}" --table-id "{table_id}" --json \'{json_str}\' --as user 2>/dev/null'
-result = subprocess.run(cmd, shell=True, capture_output=True, text=True)
-
-try:
-    data = json.loads(result.stdout)
-    if data.get("ok"):
-        record_id = data.get("data", {}).get("record", {}).get("record_id_list", [""])[0]
-        print(f"success|{record_id}")
-    else:
-        print("fail|")
-except:
-    print("fail|")
-EOF
-)
-
-if [[ "$RESULT" != success* ]]; then
-    echo "❌ 写入多维表格失败"
-    exit 1
-fi
-
-RECORD_ID=$(echo "$RESULT" | cut -d'|' -f2)
-echo "✅ 已写入多维表格"
-
-# 创建飞书日历事件
+# ===== 第一步：创建飞书日历事件 =====
 echo "📅 正在创建飞书日历事件..."
 
-# 创建日历事件
-CALENDAR_RESULT=$(python3 << EOF
+CALENDAR_RESULT=$(python3 << 'PYEOF'
 import subprocess
 import json
 from datetime import datetime, timedelta
@@ -158,7 +112,6 @@ name = "$NAME"
 time_str = "$TIME"
 repeat = "$REPEAT"
 tag = "$TAG"
-record_id = "$RECORD_ID"
 today = "$TODAY"
 
 # 构建ISO 8601格式时间
@@ -195,18 +148,29 @@ try:
     if event_id:
         print(f"success|{event_id}")
     else:
-        print(f"fail|{result.stdout}")
-except:
-    print(f"fail|{result.stdout}")
-EOF
+        error_msg = result.stdout[:100] if result.stdout else "未知错误"
+        print(f"fail|{error_msg}")
+except Exception as e:
+    print(f"fail|{str(e)}")
+PYEOF
 )
 
-if [[ "$CALENDAR_RESULT" == success* ]]; then
-    EVENT_ID=$(echo "$CALENDAR_RESULT" | cut -d'|' -f2)
-    echo "✅ 已创建飞书日历事件"
-    
-    # 设置为私密状态
-    python3 << EOF
+if [[ "$CALENDAR_RESULT" == fail* ]]; then
+    ERROR_MSG="${CALENDAR_RESULT#fail|}"
+    echo "❌ 创建飞书日历事件失败：$ERROR_MSG"
+    exit 1
+fi
+
+if [[ "$CALENDAR_RESULT" != success* ]]; then
+    echo "❌ 创建飞书日历事件失败：未获取到事件ID"
+    exit 1
+fi
+
+EVENT_ID=$(echo "$CALENDAR_RESULT" | cut -d'|' -f2)
+echo "✅ 飞书日历事件创建成功"
+
+# 设置为私密状态
+python3 << PYEOF
 import subprocess
 import json
 
@@ -214,26 +178,53 @@ event_id = "$EVENT_ID"
 data = json.dumps({"visibility": "private"})
 cmd = f'LARK_CLI_NO_PROXY=1 lark-cli calendar events patch --calendar-id primary --event-id "{event_id}" --data \'{data}\' --as user 2>/dev/null'
 subprocess.run(cmd, shell=True, capture_output=True, text=True)
-EOF
-    echo "🔒 已设置为私密状态"
-    
-    # 更新多维表格的飞书日历事件ID
-    python3 << EOF
+PYEOF
+echo "🔒 已设置为私密状态"
+
+# ===== 第二步：写入多维表格 =====
+echo "📋 正在写入多维表格..."
+
+RESULT=$(python3 << PYEOF
 import subprocess
 import json
 
 base_token = "$BASE_TOKEN"
 table_id = "$SCHEDULE_TABLE"
-record_id = "$RECORD_ID"
+name = "$NAME"
+time_val = "$TIME"
+repeat = "$REPEAT"
+tag = "$TAG"
 event_id = "$EVENT_ID"
 
-record = {"飞书日历事件ID": event_id}
+record = {
+    "标题": name,
+    "时间": time_val,
+    "频率": repeat,
+    "分类": tag,
+    "是否启用": True,
+    "飞书日历事件ID": event_id
+}
+
 json_str = json.dumps(record, ensure_ascii=False)
-cmd = f'lark-cli base +record-upsert --base-token "{base_token}" --table-id "{table_id}" --record-id "{record_id}" --json \'{json_str}\' --as user 2>/dev/null'
-subprocess.run(cmd, shell=True, capture_output=True, text=True)
-EOF
+cmd = f'lark-cli base +record-upsert --base-token "{base_token}" --table-id "{table_id}" --json \'{json_str}\' --as user 2>/dev/null'
+result = subprocess.run(cmd, shell=True, capture_output=True, text=True)
+
+try:
+    data = json.loads(result.stdout)
+    if data.get("ok"):
+        print("success")
+    else:
+        print("fail")
+except:
+    print("fail")
+PYEOF
+)
+
+if [ "$RESULT" != "success" ]; then
+    echo "⚠️ 写入多维表格失败，但飞书日历事件已创建"
+    echo "💡 请手动在多维表格中补充此日程"
 else
-    echo "⚠️ 创建飞书日历事件失败，但多维表格已记录"
+    echo "✅ 已写入多维表格"
 fi
 
 echo ""

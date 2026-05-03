@@ -4,7 +4,7 @@
 
 set -e
 
-BASE_TOKEN="YOUR_BASE_TOKEN"
+BASE_TOKEN="T0ZQb1e25acfizsowUycm1Jan0c"
 
 # 先同步飞书数据
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
@@ -17,7 +17,7 @@ import subprocess
 import json
 from datetime import datetime
 
-BASE_TOKEN = "YOUR_BASE_TOKEN"
+BASE_TOKEN = "T0ZQb1e25acfizsowUycm1Jan0c"
 TODAY = datetime.now().strftime("%Y-%m-%d")
 WEEKDAY_NAMES = ["周一", "周二", "周三", "周四", "周五", "周六", "周日"]
 TODAY_WEEKDAY = WEEKDAY_NAMES[datetime.now().weekday()]
@@ -66,7 +66,7 @@ print("====================\n")
 
 # 1. 今日日程（根据频率判断今天是否应该显示）
 print("📅 今日日程")
-data = run_lark_cli("YOUR_SCHEDULE_TABLE_ID")
+data = run_lark_cli("tblAO5xVkCvkVW07")
 if data and data.get("data", {}).get("data"):
     # 筛选已启用 且 今天应该显示的日程
     today_schedules = []
@@ -103,7 +103,7 @@ print()
 
 # 2. 今日任务（截止日期=今日 且 状态=待办）
 print("📋 今日任务")
-data = run_lark_cli("YOUR_TASK_TABLE_ID")
+data = run_lark_cli("tblI3CavMGlKSbml")
 if data and data.get("data", {}).get("data"):
     # 筛选今日任务（日期格式可能是 YYYY-MM-DD HH:MM:SS）
     today_tasks = []
@@ -148,7 +148,7 @@ print()
 
 # 3. 已启用习惯 + 今日打卡状态
 print("✅ 习惯清单")
-habits_data = run_lark_cli("YOUR_HABIT_TABLE_ID")
+habits_data = run_lark_cli("tblo7lOdFkpP635C")
 
 enabled_habits = []
 if habits_data and habits_data.get("data", {}).get("data"):
@@ -157,7 +157,7 @@ if habits_data and habits_data.get("data", {}).get("data"):
 if enabled_habits:
     for h in enabled_habits:
         name = h[0]
-        last_checkin_date = h[5]  # 最后打卡日期
+        last_checkin_date = str(h[5])[:10] if h[5] else ""  # 最后打卡日期，截取日期部分
         if last_checkin_date == TODAY:
             print(f"- {name} ✅ 已打卡")
         else:

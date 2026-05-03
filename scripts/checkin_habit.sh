@@ -14,9 +14,9 @@ if [ -z "$NAME" ]; then
     exit 1
 fi
 
-BASE_TOKEN="YOUR_BASE_TOKEN"
-HABIT_TABLE="YOUR_HABIT_TABLE_ID"
-CHECKIN_TABLE="YOUR_CHECKIN_TABLE_ID"
+BASE_TOKEN="T0ZQb1e25acfizsowUycm1Jan0c"
+HABIT_TABLE="tblo7lOdFkpP635C"
+CHECKIN_TABLE="tblcnWfMx7PcTjTx"
 TODAY=$(date +"%Y-%m-%d")
 
 # 查询习惯数据
@@ -52,8 +52,8 @@ record_ids = data['data']['record_id_list']
 for i, d in enumerate(records):
     if d[0] == name:
         record_id = record_ids[i]
-        current_count = d[1] if d[1] else 0
-        current_streak = d[2] if d[2] else 0
+        current_count = int(d[1]) if d[1] else 0
+        current_streak = int(d[2]) if d[2] else 0
         last_date = d[5]
         break
 
@@ -68,7 +68,7 @@ if last_date == today:
 
 # 计算连续天数
 if last_date:
-    last = datetime.strptime(last_date, '%Y-%m-%d')
+    last = datetime.strptime(str(last_date)[:10], '%Y-%m-%d')
     today_dt = datetime.strptime(today, '%Y-%m-%d')
     if (today_dt - last).days == 1:
         new_streak = current_streak + 1

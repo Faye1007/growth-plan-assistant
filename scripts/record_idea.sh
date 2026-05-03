@@ -7,7 +7,7 @@ set -e
 
 CONTENT="$1"
 
-BASE_TOKEN="YOUR_BASE_TOKEN"
+BASE_TOKEN="T0ZQb1e25acfizsowUycm1Jan0c"
 IDEA_TABLE="tblmpYc94WArjAjI"
 TODAY=$(date +"%Y-%m-%d")
 

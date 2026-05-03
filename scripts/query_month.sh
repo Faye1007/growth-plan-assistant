@@ -3,17 +3,17 @@
 # 用法: ./query_month.sh
 #
 # 检索范围：
-# - 固定日程表：YOUR_SCHEDULE_TABLE_ID
-# - 任务表：YOUR_TASK_TABLE_ID
-# - 习惯表：YOUR_HABIT_TABLE_ID
-# - 打卡记录表：YOUR_CHECKIN_TABLE_ID
+# - 固定日程表：tblAO5xVkCvkVW07
+# - 任务表：tblI3CavMGlKSbml
+# - 习惯表：tblo7lOdFkpP635C
+# - 打卡记录表：tblcnWfMx7PcTjTx
 # - 灵感表：tblmpYc94WArjAjI
 #
 # 不包含：心情感悟（属于人生笔记内容）
 
 set -e
 
-BASE_TOKEN="YOUR_BASE_TOKEN"
+BASE_TOKEN="T0ZQb1e25acfizsowUycm1Jan0c"
 
 # 计算本月起止日期
 MONTH_START=$(date +"%Y-%m-01")
@@ -27,7 +27,7 @@ echo ""
 echo "📋 任务完成情况"
 lark-cli base +record-list \
   --base-token "$BASE_TOKEN" \
-  --table-id "YOUR_TASK_TABLE_ID" \
+  --table-id "tblI3CavMGlKSbml" \
   --as user 2>/dev/null | head -100
 echo ""
 
@@ -35,7 +35,7 @@ echo ""
 echo "✅ 习惯打卡"
 lark-cli base +record-list \
   --base-token "$BASE_TOKEN" \
-  --table-id "YOUR_CHECKIN_TABLE_ID" \
+  --table-id "tblcnWfMx7PcTjTx" \
   --as user 2>/dev/null | head -100
 echo ""
 

@@ -5,7 +5,7 @@
 
 set -e
 
-BASE_TOKEN="YOUR_BASE_TOKEN"
+BASE_TOKEN="T0ZQb1e25acfizsowUycm1Jan0c"
 
 # 先同步飞书数据
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
@@ -18,9 +18,9 @@ import subprocess
 import json
 from datetime import datetime, timedelta
 
-BASE_TOKEN = "YOUR_BASE_TOKEN"
-GROWTH_BASE_TOKEN = "YOUR_BASE_TOKEN"  # 成长计划
-LIFE_BASE_TOKEN = "YOUR_BASE_TOKEN"    # 生活小助手（同一个）
+BASE_TOKEN = "T0ZQb1e25acfizsowUycm1Jan0c"
+GROWTH_BASE_TOKEN = "T0ZQb1e25acfizsowUycm1Jan0c"  # 成长计划
+LIFE_BASE_TOKEN = "T0ZQb1e25acfizsowUycm1Jan0c"    # 生活小助手（同一个）
 
 TODAY = datetime.now().strftime("%Y-%m-%d")
 WEEKDAY = ["周一", "周二", "周三", "周四", "周五", "周六", "周日"][datetime.now().weekday()]
@@ -144,7 +144,7 @@ def should_show_schedule(freq, weekday):
     return False
 
 weekday = datetime.now().weekday()  # 0=周一, 6=周日
-data = run_lark_cli("YOUR_SCHEDULE_TABLE_ID")
+data = run_lark_cli("tblAO5xVkCvkVW07")
 if data and data.get("data", {}).get("data"):
     schedules = [d for d in data["data"]["data"] if d[4] == True]
     today_schedules = []
@@ -165,7 +165,7 @@ print()
 
 # 3. 今日任务
 print("📋 今日任务")
-data = run_lark_cli("YOUR_TASK_TABLE_ID")
+data = run_lark_cli("tblI3CavMGlKSbml")
 if data and data.get("data", {}).get("data"):
     today_tasks = [d for d in data["data"]["data"] if d[1] and d[1].startswith(TODAY) and get_field(d[6]) == "待办"]
     if today_tasks:
@@ -188,7 +188,7 @@ print()
 
 # 4. 习惯打卡
 print("✅ 习惯打卡")
-data = run_lark_cli("YOUR_HABIT_TABLE_ID")
+data = run_lark_cli("tblo7lOdFkpP635C")
 if data and data.get("data", {}).get("data"):
     habits = [d for d in data["data"]["data"] if d[6] == True]
     if habits:

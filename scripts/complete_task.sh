@@ -8,8 +8,8 @@ set -e
 NAME="$1"
 REVIEW="$2"
 
-BASE_TOKEN="YOUR_BASE_TOKEN"
-TASK_TABLE="YOUR_TASK_TABLE_ID"
+BASE_TOKEN="T0ZQb1e25acfizsowUycm1Jan0c"
+TASK_TABLE="tblI3CavMGlKSbml"
 
 # 检查必要字段
 if [ -z "$NAME" ]; then
@@ -38,7 +38,7 @@ try:
     for i, r in enumerate(records):
         task_name = r[5]
         if task_name == name:
-            feishu_id = r[2]
+            feishu_id = r[4]  # 飞书任务ID在索引4的位置
             status = r[6][0] if isinstance(r[6], list) else r[6]
             record_id = record_ids[i]
             print(f"{record_id}|{feishu_id}|{status}")
@@ -109,7 +109,7 @@ echo "✅ 已更新多维表格"
 if [ -n "$FEISHU_TASK_ID" ]; then
     echo "📋 正在同步到飞书任务..."
     
-    SYNC_RESULT=$(lark-cli task +update --task-id "$FEISHU_TASK_ID" --complete true 2>/dev/null)
+    SYNC_RESULT=$(lark-cli task +complete --task-id "$FEISHU_TASK_ID" 2>/dev/null)
     
     if [ $? -eq 0 ]; then
         echo "✅ 已同步到飞书任务"

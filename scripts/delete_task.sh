@@ -11,8 +11,8 @@ if [ -z "$TITLE" ]; then
     exit 1
 fi
 
-BASE_TOKEN="YOUR_BASE_TOKEN"
-TABLE_ID="YOUR_TASK_TABLE_ID"
+BASE_TOKEN="T0ZQb1e25acfizsowUycm1Jan0c"
+TABLE_ID="tblI3CavMGlKSbml"
 
 # 1. 查询多维表格
 RECORDS=$(lark-cli base +record-list --base-token "$BASE_TOKEN" --table-id "$TABLE_ID" --as user 2>/dev/null)

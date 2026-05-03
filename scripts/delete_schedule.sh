@@ -11,8 +11,8 @@ if [ -z "$NAME" ]; then
     exit 1
 fi
 
-BASE_TOKEN="YOUR_BASE_TOKEN"
-TABLE_ID="YOUR_SCHEDULE_TABLE_ID"
+BASE_TOKEN="T0ZQb1e25acfizsowUycm1Jan0c"
+TABLE_ID="tblAO5xVkCvkVW07"
 
 # 1. 查询多维表格获取记录ID和飞书日历事件ID
 RECORDS=$(lark-cli base +record-list --base-token "$BASE_TOKEN" --table-id "$TABLE_ID" --as user 2>/dev/null)

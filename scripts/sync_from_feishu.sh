@@ -6,9 +6,9 @@
 
 set -e
 
-BASE_TOKEN="YOUR_BASE_TOKEN"
-SCHEDULE_TABLE="YOUR_SCHEDULE_TABLE_ID"
-TASK_TABLE="YOUR_TASK_TABLE_ID"
+BASE_TOKEN="T0ZQb1e25acfizsowUycm1Jan0c"
+SCHEDULE_TABLE="tblAO5xVkCvkVW07"
+TASK_TABLE="tblI3CavMGlKSbml"
 
 echo "🔄 双向同步飞书数据到多维表格..."
 
@@ -17,9 +17,9 @@ import subprocess
 import json
 from datetime import datetime, timedelta
 
-BASE_TOKEN = "YOUR_BASE_TOKEN"
-SCHEDULE_TABLE = "YOUR_SCHEDULE_TABLE_ID"
-TASK_TABLE = "YOUR_TASK_TABLE_ID"
+BASE_TOKEN = "T0ZQb1e25acfizsowUycm1Jan0c"
+SCHEDULE_TABLE = "tblAO5xVkCvkVW07"
+TASK_TABLE = "tblI3CavMGlKSbml"
 
 # 时间范围：前后一周
 today = datetime.now()
@@ -123,6 +123,10 @@ deleted_count = 0
 # 1. 更新/新增：飞书有 → 多维表格
 for title, feishu_info in feishu_schedules.items():
     if title in schedule_map:
+        # 跳过已停用的日程，不同步
+        if not schedule_map[title]["enabled"]:
+            print(f"  跳过(已停用): {title}")
+            continue
         # 已存在，检查时间是否一致
         db_time = schedule_map[title]["time"]
         if feishu_info["time"] != db_time:
@@ -152,7 +156,13 @@ for title, feishu_info in feishu_schedules.items():
         added_count += 1
 
 # 2. 删除：飞书没有 → 多维表格有（或黑名单内的日程）
+# 注意：已停用的日程不删除，保留记录
 for title in list(schedule_map.keys()):
+    # 跳过已停用的日程
+    if not schedule_map[title]["enabled"]:
+        print(f"  跳过(已停用): {title}")
+        continue
+
     # 检查是否在黑名单
     is_blacklisted = False
     for keyword in BLACKLIST:

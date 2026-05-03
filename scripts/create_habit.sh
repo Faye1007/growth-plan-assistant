@@ -8,8 +8,8 @@ set -e
 NAME="$1"
 TAG="$2"
 
-BASE_TOKEN="YOUR_BASE_TOKEN"
-HABIT_TABLE="YOUR_HABIT_TABLE_ID"
+BASE_TOKEN="T0ZQb1e25acfizsowUycm1Jan0c"
+HABIT_TABLE="tblo7lOdFkpP635C"
 TODAY=$(date +"%Y-%m-%d")
 
 # 检查必要字段
