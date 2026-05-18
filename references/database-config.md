@@ -3,8 +3,8 @@
 ## 表格信息
 
 **表格名称**：Faye的成长计划
-**Base Token**：T0ZQb1e25acfizsowUycm1Jan0c
-**表格地址**：https://lcn6itdxogbg.feishu.cn/base/T0ZQb1e25acfizsowUycm1Jan0c
+**Base Token**：your_base_token_here
+**表格地址**：https://lcn6itdxogbg.feishu.cn/base/your_base_token_here
 
 ---
 
@@ -28,7 +28,7 @@
 
 ```bash
 lark-cli base +record-upsert \
-  --base-token "T0ZQb1e25acfizsowUycm1Jan0c" \
+  --base-token "your_base_token_here" \
   --table-id "tblAO5xVkCvkVW07" \
   --json '{"日程名称":"每天早上8点起床","开始时间":"2026-04-18 08:00:00","重复规则":"每天","状态":"进行中"}' \
   --as user
@@ -38,7 +38,7 @@ lark-cli base +record-upsert \
 
 ```bash
 lark-cli base +record-list \
-  --base-token "T0ZQb1e25acfizsowUycm1Jan0c" \
+  --base-token "your_base_token_here" \
   --table-id "tblAO5xVkCvkVW07" \
   --as user
 ```
@@ -67,7 +67,7 @@ lark-cli base +record-list \
 
 ```bash
 lark-cli base +record-upsert \
-  --base-token "T0ZQb1e25acfizsowUycm1Jan0c" \
+  --base-token "your_base_token_here" \
   --table-id "tblI3CavMGlKSbml" \
   --json '{"fld5IYqRy4":"2026-04-17","fldqux9alc":"改简历","fldydzm2hy":"工作","fldSzwfWct":"未开始"}' \
   --as user
@@ -77,7 +77,7 @@ lark-cli base +record-upsert \
 
 ```bash
 lark-cli base +record-list \
-  --base-token "T0ZQb1e25acfizsowUycm1Jan0c" \
+  --base-token "your_base_token_here" \
   --table-id "tblI3CavMGlKSbml" \
   --as user
 ```

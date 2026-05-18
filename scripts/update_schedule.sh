@@ -4,6 +4,12 @@
 
 set -e
 
+# 加载环境变量
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+if [ -f "$SCRIPT_DIR/../.env" ]; then
+    export $(grep -v '^#' "$SCRIPT_DIR/../.env" | xargs)
+fi
+
 NAME="$1"
 NEW_TIME="$2"
 NEW_RULE="$3"
@@ -13,7 +19,11 @@ if [ -z "$NAME" ]; then
     exit 1
 fi
 
-BASE_TOKEN="T0ZQb1e25acfizsowUycm1Jan0c"
+# 从环境变量读取配置
+if [ -z "$BASE_TOKEN" ]; then
+    echo "❌ 请先在.env文件中配置BASE_TOKEN"
+    exit 1
+fi
 TABLE_ID="tblAO5xVkCvkVW07"
 
 export LARK_CLI_NO_PROXY=1

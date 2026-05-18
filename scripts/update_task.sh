@@ -4,10 +4,20 @@
 
 set -e
 
+# 加载环境变量
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+if [ -f "$SCRIPT_DIR/../.env" ]; then
+    export $(grep -v '^#' "$SCRIPT_DIR/../.env" | xargs)
+fi
+
 OLD_TITLE="$1"
 shift
 
-BASE_TOKEN="T0ZQb1e25acfizsowUycm1Jan0c"
+# 从环境变量读取配置
+if [ -z "$BASE_TOKEN" ]; then
+    echo "❌ 请先在.env文件中配置BASE_TOKEN"
+    exit 1
+fi
 TABLE_ID="tblI3CavMGlKSbml"
 
 if [ -z "$OLD_TITLE" ]; then

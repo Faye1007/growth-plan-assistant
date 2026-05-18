@@ -7,14 +7,24 @@
 
 set -e
 
+# 加载环境变量
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+if [ -f "$SCRIPT_DIR/../.env" ]; then
+    export $(grep -v '^#' "$SCRIPT_DIR/../.env" | xargs)
+fi
+
 NAME="$1"
 DEADLINE="$2"
 CATEGORY="$3"
 NOTE="$4"
 TIME="$5"  # 可选：具体时间，如 "14:00"
 
-BASE_TOKEN="T0ZQb1e25acfizsowUycm1Jan0c"
-TASK_TABLE="tblI3CavMGlKSbml"
+# 从环境变量读取配置
+if [ -z "$BASE_TOKEN" ]; then
+    echo "❌ 请先在.env文件中配置BASE_TOKEN"
+    exit 1
+fi
+TASK_TABLE="${TASK_TABLE:-tblI3CavMGlKSbml}"
 
 # 飞书任务清单ID
 TASK_LISTS='{"学习":"424aad40-5fea-47c1-b846-48416b53f685","工作":"55eb10db-31ed-4aee-bbf9-9dd97235e7d9","生活":"3dda1822-a9a8-4ab9-b6ea-a278283b8224"}'

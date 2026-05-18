@@ -6,13 +6,23 @@
 
 set -e
 
+# 加载环境变量
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+if [ -f "$SCRIPT_DIR/../.env" ]; then
+    export $(grep -v '^#' "$SCRIPT_DIR/../.env" | xargs)
+fi
+
 NAME="$1"
 TIME="$2"
 REPEAT="$3"
 TAG="$4"
 
-BASE_TOKEN="T0ZQb1e25acfizsowUycm1Jan0c"
-SCHEDULE_TABLE="tblAO5xVkCvkVW07"
+# 从环境变量读取配置
+if [ -z "$BASE_TOKEN" ]; then
+    echo "❌ 请先在.env文件中配置BASE_TOKEN"
+    exit 1
+fi
+SCHEDULE_TABLE="${SCHEDULE_TABLE:-tblAO5xVkCvkVW07}"
 TODAY=$(date +"%Y-%m-%d")
 
 # 检查必要字段

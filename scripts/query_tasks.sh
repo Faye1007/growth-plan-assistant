@@ -3,6 +3,12 @@
 
 set -e
 
+# 加载环境变量
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+if [ -f "$SCRIPT_DIR/../.env" ]; then
+    export $(grep -v '^#' "$SCRIPT_DIR/../.env" | xargs)
+fi
+
 TODAY=$(date +"%Y-%m-%d")
 
 echo "📅 今日任务 ($TODAY)"
